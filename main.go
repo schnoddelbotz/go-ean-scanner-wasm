@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"syscall/js"
 
+	// "github.com/makiuchi-d/gozxing"
+	"github.com/makiuchi-d/gozxing/oned"
+
 	"github.com/schnoddelbotz/suggest-wasm/filter"
 )
 
@@ -20,7 +23,6 @@ func main() {
 	applyFilterFunc := js.FuncOf(applyFilter) // wrapper function
 	js.Global().Set("applyFilter", applyFilterFunc)
 	defer applyFilterFunc.Release()
-
 
 	<-c
 }
@@ -58,6 +60,12 @@ func applyFilter(this js.Value, args []js.Value) interface{} {
 
 	buf := uint8Array.New(len(jsPixels))
 	js.CopyBytesToJS(buf, jsPixels)
+
+	reader := oned.NewMultiFormatUPCEANReader(nil)
+	println("reader ...", reader)
+	// TODO: feed pixels to scanner ...
+	// reader.DecodeWithoutHints(jsPixels)
+
 
 	return buf
 }
