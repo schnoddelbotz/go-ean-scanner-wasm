@@ -1,2 +1,3 @@
 web/wasm_exec.js
 web/main.wasm*
+.idea/
