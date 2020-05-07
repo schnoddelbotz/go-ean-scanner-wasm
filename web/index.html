@@ -5,10 +5,31 @@
     <!-- how to noscript-wasm? i.e. browser without wasm support / disabled? fall back to remote api! -->
     <script>
       const go = new Go();
+      let mod, inst;
       WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
-        go.run(result.instance);
+        mod = result.module;
+        inst = result.instance;
+        go.run(inst);
       });
+      function suggestQuery(query) {
+        suggestions =suggest(query);
+        console.log(suggestions);
+        //console.log(output);
+        return true;
+      }
     </script>
   </head>
-  <body></body>
+<body>
+
+<h1>tiny wasm experiment</h1>
+
+Search: <input oninput="suggestQuery(this.value);" type="text" id="query">
+
+<div id="outlet">
+</div>
+
+<script>
+document.getElementById('query').focus();
+</script>
+</body>
 </html>
