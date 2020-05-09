@@ -30,8 +30,8 @@ class Fps {
   }
 }
 
-const WIDTH = 800;
-const HEIGHT = 800;
+const WIDTH = 640;
+const HEIGHT = 480;
 
 const elements = {
   canvas: {
@@ -81,8 +81,12 @@ const getOptions = () => {
 };
 
 // Start to capture webcam
-
-navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+const vgaConstraints = {
+  video: {width: {exact: 640}, height: {exact: 480}},
+  audio: false
+};
+// navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+navigator.mediaDevices.getUserMedia(vgaConstraints)
 .then(function (stream) {
 
   elements.canvas.video.srcObject = stream;

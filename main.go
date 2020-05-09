@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"image"
 	"syscall/js"
-
-	// "github.com/makiuchi-d/gozxing"
+	
+	"github.com/makiuchi-d/gozxing"
 	"github.com/makiuchi-d/gozxing/oned"
 
 	"github.com/schnoddelbotz/suggest-wasm/filter"
@@ -62,10 +63,23 @@ func applyFilter(this js.Value, args []js.Value) interface{} {
 	js.CopyBytesToJS(buf, jsPixels)
 
 	reader := oned.NewMultiFormatUPCEANReader(nil)
-	println("reader ...", reader)
+	//println("reader ...", reader)
+	//fmt.Printf("X: %+v", this)
 	// TODO: feed pixels to scanner ...
 	// reader.DecodeWithoutHints(jsPixels)
+	r := image.Rect(0,0, 640, 480)
+	img := image.NewRGBA(r)
+	_ = js.CopyBytesToGo(img.Pix, args[1])
 
+	b, err := gozxing.NewBinaryBitmapFromImage(img)
+	if err != nil {
+		println("err", err)
+	}
+	d, derr := reader.DecodeWithoutHints(b)
+	if derr == nil {
+		panic("WE FOUND A BARCODE!!!!")
+	}
+	fmt.Printf("len %d -- X %+v -- %s\n", len(jsPixels), d, derr)
 
 	return buf
 }

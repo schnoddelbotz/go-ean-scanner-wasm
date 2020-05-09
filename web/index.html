@@ -61,6 +61,7 @@ document.getElementById('query').focus();
       const imageDataUpdated = new ImageData(data, WIDTH, HEIGHT);
       // write image back to canvas
       elements.canvas.ctx.visible.putImageData(imageDataUpdated, 0, 0);
+      //console.log(imageData);
 
       requestAnimationFrame(render);
     };
