@@ -80,6 +80,7 @@ const getOptions = () => {
   return options;
 };
 
+
 // Start to capture webcam
 const vgaConstraints = {
   video: {width: {exact: 640}, height: {exact: 480}},
@@ -88,11 +89,9 @@ const vgaConstraints = {
 // navigator.mediaDevices.getUserMedia({ video: true, audio: false })
 navigator.mediaDevices.getUserMedia(vgaConstraints)
 .then(function (stream) {
-
   elements.canvas.video.srcObject = stream;
 })
 .catch(function (err) {
-
   throw err;
 });
 
